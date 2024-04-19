@@ -6,7 +6,8 @@ import (
 )
 
 type Receiver struct {
-	In *chan int
+	In  *chan int
+	Ack *chan bool
 }
 
 func (c Receiver) Receive(ctx context.Context) {

@@ -9,3 +9,8 @@ Use the following command, this will automatically run the program on file-save:
 ``` shell
 ls * | entr -r go run .
 ```
+
+## Features
+- Packeting
+- Hamming
+- ARQ
