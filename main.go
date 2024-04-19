@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	in := make(chan int, 1)
+	in := make(chan []byte, 1)
 	ack := make(chan bool, 1)
 
 	t := transmitter.Transmitter{In: &in, Ack: &ack}

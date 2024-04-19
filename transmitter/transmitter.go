@@ -5,7 +5,7 @@ import (
 )
 
 type Transmitter struct {
-	In  *chan int
+	In  *chan []byte
 	Ack *chan bool
 }
 
@@ -17,11 +17,13 @@ func (t Transmitter) Transmit() {
 		ack := <-*t.Ack
 		if ack {
 			fmt.Println(ack)
-			*t.In <- message
+			data := make([]byte, 64)
+			crcAddedData := AddCRC(&data)
+			*t.In <- crcAddedData
 			message++
 		} else {
 			message--
-			*t.In <- message
+			*t.In <- make([]byte, 64)
 		}
 
 	}
