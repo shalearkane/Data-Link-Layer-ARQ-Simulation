@@ -3,7 +3,6 @@ package main
 import (
 	"channels/receiver"
 	"channels/transmitter"
-	"context"
 	"os"
 	"os/signal"
 	"syscall"
@@ -16,11 +15,9 @@ func main() {
 	t := transmitter.Transmitter{In: &in, Ack: &ack}
 	r := receiver.Receiver{In: &in, Ack: &ack}
 	go t.Transmit()
-	ctx, cancelFunc := context.WithCancel(context.Background())
-	go r.Receive(ctx)
+	go r.Receive()
 
 	termChan := make(chan os.Signal)
 	signal.Notify(termChan, syscall.SIGINT, syscall.SIGTERM)
 	<-termChan
-	cancelFunc()
 }

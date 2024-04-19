@@ -1,7 +1,6 @@
 package receiver
 
 import (
-	"context"
 	"fmt"
 )
 
@@ -10,15 +9,18 @@ type Receiver struct {
 	Ack *chan bool
 }
 
-func (c Receiver) Receive(ctx context.Context) {
+func (r Receiver) Receive() {
+	count := 10
 	for {
-		select {
-		case job := <-*c.In:
-			{
-				println(fmt.Sprintf("Got a job %d", job))
-			}
-		case <-ctx.Done():
+		message := <-*r.In
+		println(fmt.Sprintf("Got a message %d", message))
+		*r.Ack <- true
+		count--
+		if count < 0 {
+			close(*r.In)
+			close(*r.Ack)
 			return
 		}
+
 	}
 }

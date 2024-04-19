@@ -1,14 +1,28 @@
 package transmitter
 
+import (
+	"fmt"
+)
+
 type Transmitter struct {
 	In  *chan int
 	Ack *chan bool
 }
 
-func (p Transmitter) Transmit() {
-	task := 1
+func (t Transmitter) Transmit() {
+	*t.Ack <- true
+	message := 1
+
 	for {
-		*p.In <- task
-		task++
+		ack := <-*t.Ack
+		if ack {
+			fmt.Println(ack)
+			*t.In <- message
+			message++
+		} else {
+			message--
+			*t.In <- message
+		}
+
 	}
 }
