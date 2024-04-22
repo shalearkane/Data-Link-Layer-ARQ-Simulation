@@ -19,7 +19,7 @@ func (t Transmitter) Transmit() {
 			fmt.Println(ack)
 			data := make([]byte, 64)
 			crcAddedData := AddCRC(&data)
-			*t.In <- crcAddedData
+			*t.In <- AddNoise(crcAddedData)
 			message++
 		} else {
 			message--
